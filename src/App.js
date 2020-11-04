@@ -1,23 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Form from "./Components/Form";
+import TodoList from "./Components/TodoList";
+import "./App.css";
 
 function App() {
+  // STATE
+  const [inputText, setInputText] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [filter, setFilter] = useState("all");
+  const [filteredTodos, setFilteredTodos] = useState([]);
+
+  // FUNCTIONS
+  const filterHandler = () => {
+    switch (filter) {
+      case "completed":
+        setFilteredTodos(todos.filter((todo) => todo.completed === true));
+        break;
+      case "uncompleted":
+        setFilteredTodos(todos.filter((todo) => todo.completed === false));
+        break;
+      default:
+        setFilteredTodos(todos);
+    }
+  };
+
+  const saveLocalTodos = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
+  const getLocalTodos = () => {
+    if (!localStorage.getItem("todos")) {
+      localStorage.setItem("todos", JSON.stringify([]));
+    } else {
+      setTodos(JSON.parse(localStorage.getItem("todos")));
+    }
+  };
+
+  // USE EFFECTS
+  useEffect(() => {
+    getLocalTodos();
+  }, []);
+  useEffect(() => {
+    filterHandler();
+    saveLocalTodos();
+  }, [todos, filter]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1>Sean's To-Do List</h1>
       </header>
+      <Form
+        todos={todos}
+        setTodos={setTodos}
+        inputText={inputText}
+        setInputText={setInputText}
+        setFilter={setFilter}
+      />
+      <TodoList todos={filteredTodos} setTodos={setTodos} />
     </div>
   );
 }
