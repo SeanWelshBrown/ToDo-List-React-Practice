@@ -10,6 +10,16 @@ function App() {
   const [filter, setFilter] = useState("all");
   const [filteredTodos, setFilteredTodos] = useState([]);
 
+  // USE EFFECTS
+  useEffect(() => {
+    getLocalTodos();
+  }, []);
+
+  useEffect(() => {
+    filterHandler();
+    saveLocalTodos();
+  }, [todos, filter]);
+
   // FUNCTIONS
   const filterHandler = () => {
     switch (filter) {
@@ -35,15 +45,7 @@ function App() {
     }
   };
 
-  // USE EFFECTS
-  useEffect(() => {
-    getLocalTodos();
-  }, []);
-  useEffect(() => {
-    filterHandler();
-    saveLocalTodos();
-  }, [todos, filter]);
-
+  // RENDER
   return (
     <div className="App">
       <header>

@@ -17,6 +17,7 @@ const Todo = ({ id, text, completed, todos, setTodos }) => {
     );
   };
 
+  // RENDER
   return (
     <div className="todo">
       <li className={`todo-item ${completed ? "completed" : ""}`}>{text}</li>

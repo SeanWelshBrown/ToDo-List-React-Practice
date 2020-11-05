@@ -23,6 +23,7 @@ const Form = ({ inputText, setInputText, todos, setTodos, setFilter }) => {
     setFilter(e.target.value);
   };
 
+  // RENDER
   return (
     <form onSubmit={submitTodoHandler}>
       <input
